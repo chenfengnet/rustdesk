@@ -911,7 +911,11 @@ pub fn check_software_update() {
 #[tokio::main(flavor = "current_thread")]
 pub async fn do_check_software_update() -> hbb_common::ResultType<()> {
     let url = "https://ouc.cc/rustdesk/rustdesk/releases/latest";
-        hbb_common::version_check_request(hbb_common::VER_TYPE_RUSTDESK_CLIENT.to_string());
+        let request = hbb_common::VersionCheckRequest {
+        ver_type: hbb_common::VER_TYPE_RUSTDESK_CLIENT.to_string(),
+        current_version: crate::VERSION.to_string(),
+        ..Default::default()
+    };
     let latest_release_response = create_http_client_async()
         .post(url)
         .json(&request)
